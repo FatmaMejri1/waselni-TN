@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../features/auth/presentation/login_screen.dart';
 import '../../shared/widgets/placeholder_screen.dart';
 import '../constants/routes.dart';
 
@@ -10,7 +11,7 @@ class AppRouter {
     switch (settings.name) {
       case Routes.root:
       case Routes.login:
-        return _page(const PlaceholderScreen(title: 'Login'), settings);
+        return _page(const LoginScreen(), settings);
 
       case Routes.signup:
         return _page(const PlaceholderScreen(title: 'Sign up'), settings);

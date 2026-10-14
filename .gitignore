@@ -46,3 +46,27 @@ app.*.map.json
 
 # Widget Preview related
 .widget_preview/
+# Secrets and signing (never commit)
+*.jks
+*.keystore
+key.properties
+.env
+.env.*
+*service-account*.json
+*-adminsdk-*.json
+
+# Firebase tooling
+.firebase/
+firebase-debug.log
+*-debug.log
+
+# Cloud Functions (when you add them)
+functions/node_modules/
+functions/lib/
+
+# Local tooling
+.fvm/
+.vscode/
+
+# Generated test output (keep the curated report in docs/)
+/coverage/

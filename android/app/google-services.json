@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "841103408574",
+    "project_id": "waselni-8bc57",
+    "storage_bucket": "waselni-8bc57.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:841103408574:android:715cec2cf3c91ce2888def",
+        "android_client_info": {
+          "package_name": "tn.waselni.waselni"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAlzVPLCL84s8EsmcNPdgzMyFx849xEis"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,10 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../../../core/constants/firestore_paths.dart';
+import '../domain/user_model.dart';
+
 class AuthService {
-  AuthService({FirebaseAuth? firebaseAuth})
-    : _auth = firebaseAuth ?? FirebaseAuth.instance;
+  AuthService({FirebaseAuth? firebaseAuth, FirebaseFirestore? firestore})
+    : _auth = firebaseAuth ?? FirebaseAuth.instance,
+      _firestore = firestore ?? FirebaseFirestore.instance;
 
   final FirebaseAuth _auth;
+  final FirebaseFirestore _firestore;
 
   /// Utilisateur actuellement connecté.
   User? get currentUser => _auth.currentUser;
@@ -23,7 +29,7 @@ class AuthService {
     );
   }
 
-  /// Inscription avec e-mail, mot de passe et nom.
+  /// Inscription et création du profil dans Cloud Firestore.
   Future<UserCredential> registerWithEmail({
     required String email,
     required String password,
@@ -34,7 +40,26 @@ class AuthService {
       password: password,
     );
 
-    await credential.user?.updateDisplayName(displayName.trim());
+    final user = credential.user;
+
+    if (user == null) {
+      throw StateError('Firebase did not return a user after registration.');
+    }
+
+    final name = displayName.trim();
+
+    await user.updateDisplayName(name);
+
+    final userModel = UserModel(
+      id: user.uid,
+      displayName: name,
+      email: user.email ?? email.trim(),
+    );
+
+    await _firestore
+        .collection(FirestorePaths.users)
+        .doc(user.uid)
+        .set(userModel.toMap());
 
     return credential;
   }

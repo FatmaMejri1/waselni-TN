@@ -1,6 +1,8 @@
+
 import 'package:flutter/material.dart';
 
 import '../../features/auth/presentation/login_screen.dart';
+import '../../features/auth/presentation/signup_screen.dart';
 import '../../shared/widgets/placeholder_screen.dart';
 import '../constants/routes.dart';
 
@@ -14,7 +16,7 @@ class AppRouter {
         return _page(const LoginScreen(), settings);
 
       case Routes.signup:
-        return _page(const PlaceholderScreen(title: 'Sign up'), settings);
+        return _page(const SignupScreen(), settings);
 
       case Routes.forgotPassword:
         return _page(
@@ -23,10 +25,16 @@ class AppRouter {
         );
 
       case Routes.home:
-        return _page(const PlaceholderScreen(title: 'Home'), settings);
+        return _page(
+          const PlaceholderScreen(title: 'Home'),
+          settings,
+        );
 
       default:
-        return _page(const PlaceholderScreen(title: 'Not found'), settings);
+        return _page(
+          const PlaceholderScreen(title: 'Not found'),
+          settings,
+        );
     }
   }
 

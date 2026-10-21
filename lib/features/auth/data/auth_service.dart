@@ -12,13 +12,10 @@ class AuthService {
   final FirebaseAuth _auth;
   final FirebaseFirestore _firestore;
 
-  /// Utilisateur actuellement connecté.
   User? get currentUser => _auth.currentUser;
 
-  /// Écoute les changements de session.
   Stream<User?> get authStateChanges => _auth.authStateChanges();
 
-  /// Connexion avec e-mail et mot de passe.
   Future<UserCredential> signInWithEmail({
     required String email,
     required String password,
@@ -29,14 +26,16 @@ class AuthService {
     );
   }
 
-  /// Inscription et création du profil dans Cloud Firestore.
   Future<UserCredential> registerWithEmail({
     required String email,
     required String password,
     required String displayName,
   }) async {
+    final normalizedEmail = email.trim();
+    final name = displayName.trim();
+
     final credential = await _auth.createUserWithEmailAndPassword(
-      email: email.trim(),
+      email: normalizedEmail,
       password: password,
     );
 
@@ -46,29 +45,41 @@ class AuthService {
       throw StateError('Firebase did not return a user after registration.');
     }
 
-    final name = displayName.trim();
+    try {
+      await user.updateDisplayName(name);
 
-    await user.updateDisplayName(name);
+      final userModel = UserModel(
+        id: user.uid,
+        displayName: name,
+        email: user.email ?? normalizedEmail,
+      );
 
-    final userModel = UserModel(
-      id: user.uid,
-      displayName: name,
-      email: user.email ?? email.trim(),
-    );
+      await _firestore
+          .collection(FirestorePaths.users)
+          .doc(user.uid)
+          .set(userModel.toMap());
 
-    await _firestore
-        .collection(FirestorePaths.users)
-        .doc(user.uid)
-        .set(userModel.toMap());
+      return credential;
+    } catch (_) {
+      // Best-effort cleanup if profile creation fails.
+      try {
+        await user.delete();
+      } catch (_) {
+        // If deletion fails, avoid leaving the user signed in.
+        try {
+          await _auth.signOut();
+        } catch (_) {
+          // Preserve the original registration error.
+        }
+      }
 
-    return credential;
+      rethrow;
+    }
   }
 
-  /// Envoi d'un e-mail de réinitialisation du mot de passe.
   Future<void> sendPasswordResetEmail(String email) {
     return _auth.sendPasswordResetEmail(email: email.trim());
   }
 
-  /// Déconnexion.
   Future<void> signOut() => _auth.signOut();
 }

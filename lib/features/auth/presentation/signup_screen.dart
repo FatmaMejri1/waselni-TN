@@ -52,10 +52,15 @@ class _SignupScreenState extends State<SignupScreen> {
         displayName: _nameController.text,
       );
 
+      await _authService.signOut();
+
       if (!mounted) return;
 
-      // Firebase connecte automatiquement l'utilisateur après son inscription.
-      Navigator.pushNamedAndRemoveUntil(context, Routes.home, (route) => false);
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        Routes.login,
+        (route) => false,
+      );
     } on FirebaseAuthException catch (error) {
       if (!mounted) return;
 

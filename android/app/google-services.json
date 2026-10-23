@@ -12,7 +12,12 @@
           "package_name": "tn.waselni.waselni"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "841103408574-sk5edicop3uba2fbt712d72bnvhtkoj1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDAlzVPLCL84s8EsmcNPdgzMyFx849xEis"
@@ -20,7 +25,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "841103408574-sk5edicop3uba2fbt712d72bnvhtkoj1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

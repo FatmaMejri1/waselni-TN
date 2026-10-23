@@ -1,0 +1,48 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    match /users/{userId} {
+      allow create: if isSignedIn()
+        && request.auth.uid == userId
+        && request.resource.data.keys().hasAll([
+          'id',
+          'displayName',
+          'email',
+          'role',
+          'reputation',
+          'isActive'
+        ])
+        && request.resource.data.keys().hasOnly([
+          'id',
+          'displayName',
+          'email',
+          'role',
+          'reputation',
+          'isActive'
+        ])
+        && request.resource.data.id == userId
+        && request.resource.data.displayName is string
+        && request.resource.data.email is string
+        && request.resource.data.role == 'passenger'
+        && request.resource.data.reputation == 0
+        && request.resource.data.isActive == true;
+
+      allow read: if isSignedIn()
+        && request.auth.uid == userId;
+
+      allow update: if isSignedIn()
+        && request.auth.uid == userId
+        && request.resource.data.diff(resource.data)
+          .affectedKeys().hasOnly(['displayName'])
+        && request.resource.data.displayName is string;
+
+      allow delete: if false;
+    }
+  }
+}

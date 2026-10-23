@@ -70,3 +70,5 @@ functions/lib/
 
 # Generated test output (keep the curated report in docs/)
 /coverage/
+# Generated Android build output
+/android/build/

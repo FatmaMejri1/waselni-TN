@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../auth/data/auth_service.dart';
 import '../../../core/constants/routes.dart';
+import '../../../core/localization/locale_controller.dart';
+import '../../../l10n/app_localizations.dart';
+import '../../auth/data/auth_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,6 +18,8 @@ class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
   bool _isSigningOut = false;
 
+  AppLocalizations get _l10n => AppLocalizations.of(context)!;
+
   Future<void> _signOut() async {
     setState(() => _isSigningOut = true);
 
@@ -29,9 +33,8 @@ class _HomeScreenState extends State<HomeScreen> {
     } catch (_) {
       if (!mounted) return;
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Unable to sign out. Please try again.')),
-      );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(_l10n.signOutError)));
     } finally {
       if (mounted) {
         setState(() => _isSigningOut = false);
@@ -39,10 +42,25 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  Future<void> _changeLanguage(String languageCode) async {
+    await LocaleController.setLocale(Locale(languageCode));
+
+    if (!mounted) return;
+
+    final languageName = switch (languageCode) {
+      'en' => _l10n.english,
+      'fr' => _l10n.french,
+      'ar' => _l10n.arabic,
+      _ => languageCode,
+    };
+
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text('$languageName selected')));
+  }
+
   void _showComingSoon(String feature) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('$feature will be available in a future update.')),
-    );
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(_l10n.comingSoon(feature))));
   }
 
   @override
@@ -51,43 +69,64 @@ class _HomeScreenState extends State<HomeScreen> {
     final displayName = user?.displayName?.trim();
     final greetingName = displayName != null && displayName.isNotEmpty
         ? displayName
-        : 'traveler';
+        : _l10n.traveler;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Row(
+        title: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.directions_bus_rounded),
-            SizedBox(width: 8),
-            Text('Waselni'),
+            const Icon(Icons.directions_bus_rounded),
+            const SizedBox(width: 8),
+            Text(_l10n.appTitle),
           ],
         ),
         actions: [
           IconButton(
-            tooltip: 'Notifications',
-            onPressed: () => _showComingSoon('Notifications'),
+            tooltip: _l10n.notifications,
+            onPressed: () => _showComingSoon(_l10n.notifications),
             icon: const Icon(Icons.notifications_outlined),
           ),
           PopupMenuButton<String>(
-            tooltip: 'Account',
+            tooltip: _l10n.account,
             onSelected: (value) {
               if (value == 'logout') {
                 _signOut();
+              } else if (value.startsWith('lang_')) {
+                _changeLanguage(value.substring(5));
               }
             },
-            itemBuilder: (context) => [
-              PopupMenuItem<String>(
-                value: 'logout',
-                child: Row(
-                  children: [
-                    const Icon(Icons.logout),
-                    const SizedBox(width: 12),
-                    Text(_isSigningOut ? 'Signing out...' : 'Log out'),
-                  ],
+            itemBuilder: (context) {
+              final currentLanguage = Localizations.localeOf(context)
+                  .languageCode;
+
+              return [
+                PopupMenuItem<String>(
+                  enabled: false,
+                  child: Row(
+                    children: [
+                      const Icon(Icons.language),
+                      const SizedBox(width: 12),
+                      Text(_l10n.chooseLanguage),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+                _languageItem('en', _l10n.english, currentLanguage),
+                _languageItem('fr', _l10n.french, currentLanguage),
+                _languageItem('ar', _l10n.arabic, currentLanguage),
+                const PopupMenuDivider(),
+                PopupMenuItem<String>(
+                  value: 'logout',
+                  child: Row(
+                    children: [
+                      const Icon(Icons.logout),
+                      const SizedBox(width: 12),
+                      Text(_isSigningOut ? _l10n.signingOut : _l10n.logout),
+                    ],
+                  ),
+                ),
+              ];
+            },
           ),
         ],
       ),
@@ -97,20 +136,18 @@ class _HomeScreenState extends State<HomeScreen> {
           _buildDashboard(greetingName),
           _buildSimplePage(
             icon: Icons.schedule_outlined,
-            title: 'Transport schedules',
-            description:
-                'Bus, Metro, Train and TGM schedules will appear here.',
+            title: _l10n.transportSchedules,
+            description: _l10n.scheduleDescription,
           ),
           _buildSimplePage(
             icon: Icons.favorite_outline,
-            title: 'Your favorites',
-            description:
-                'Your saved routes and transport lines will appear here.',
+            title: _l10n.yourFavorites,
+            description: _l10n.favoritesDescription,
           ),
           _buildSimplePage(
             icon: Icons.person_outline,
-            title: 'Your account',
-            description: user?.email ?? 'Account information',
+            title: _l10n.account,
+            description: user?.email ?? _l10n.accountInformation,
           ),
         ],
       ),
@@ -119,27 +156,45 @@ class _HomeScreenState extends State<HomeScreen> {
         onDestinationSelected: (index) {
           setState(() => _selectedIndex = index);
         },
-        destinations: const [
+        destinations: [
           NavigationDestination(
-            icon: Icon(Icons.home_outlined),
-            selectedIcon: Icon(Icons.home_rounded),
-            label: 'Home',
+            icon: const Icon(Icons.home_outlined),
+            selectedIcon: const Icon(Icons.home_rounded),
+            label: _l10n.home,
           ),
           NavigationDestination(
-            icon: Icon(Icons.schedule_outlined),
-            selectedIcon: Icon(Icons.schedule),
-            label: 'Schedules',
+            icon: const Icon(Icons.schedule_outlined),
+            selectedIcon: const Icon(Icons.schedule),
+            label: _l10n.schedules,
           ),
           NavigationDestination(
-            icon: Icon(Icons.favorite_outline),
-            selectedIcon: Icon(Icons.favorite),
-            label: 'Favorites',
+            icon: const Icon(Icons.favorite_outline),
+            selectedIcon: const Icon(Icons.favorite),
+            label: _l10n.favorites,
           ),
           NavigationDestination(
-            icon: Icon(Icons.person_outline),
-            selectedIcon: Icon(Icons.person),
-            label: 'Account',
+            icon: const Icon(Icons.person_outline),
+            selectedIcon: const Icon(Icons.person),
+            label: _l10n.account,
           ),
+        ],
+      ),
+    );
+  }
+
+  PopupMenuItem<String> _languageItem(
+    String code,
+    String label,
+    String currentLanguage,
+  ) {
+    return PopupMenuItem<String>(
+      value: 'lang_$code',
+      child: Row(
+        children: [
+          const SizedBox(width: 36),
+          Text(label),
+          const Spacer(),
+          if (currentLanguage == code) const Icon(Icons.check, size: 18),
         ],
       ),
     );
@@ -150,18 +205,13 @@ class _HomeScreenState extends State<HomeScreen> {
       padding: const EdgeInsets.all(20),
       children: [
         Text(
-          'Welcome, $name!',
+          _l10n.welcome(name),
           style: Theme.of(context).textTheme.headlineMedium
               ?.copyWith(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 8),
-        Text(
-          'Your journey starts here.',
-          style: Theme.of(context).textTheme.bodyLarge,
-        ),
+        Text(_l10n.journeyStarts, style: Theme.of(context).textTheme.bodyLarge),
         const SizedBox(height: 24),
-
-        // Main banner
         Container(
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
@@ -175,14 +225,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Travel smarter',
+                      _l10n.travelSmarter,
                       style: Theme.of(context).textTheme.titleLarge
                           ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 8),
-                    const Text(
-                      'Find transport information and help other travelers.',
-                    ),
+                    Text(_l10n.travelDescription),
                   ],
                 ),
               ),
@@ -196,9 +244,8 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         const SizedBox(height: 28),
-
         Text(
-          'Transport',
+          _l10n.transport,
           style: Theme.of(context).textTheme.titleLarge
               ?.copyWith(fontWeight: FontWeight.bold),
         ),
@@ -212,31 +259,30 @@ class _HomeScreenState extends State<HomeScreen> {
           childAspectRatio: 1.25,
           children: [
             _TransportCard(
-              title: 'Bus',
+              title: _l10n.bus,
               icon: Icons.directions_bus_rounded,
-              onTap: () => _showComingSoon('Bus schedules'),
+              onTap: () => _showComingSoon(_l10n.busSchedules),
             ),
             _TransportCard(
-              title: 'Metro',
+              title: _l10n.metro,
               icon: Icons.tram_rounded,
-              onTap: () => _showComingSoon('Metro schedules'),
+              onTap: () => _showComingSoon(_l10n.metroSchedules),
             ),
             _TransportCard(
-              title: 'Train',
+              title: _l10n.train,
               icon: Icons.train_rounded,
-              onTap: () => _showComingSoon('Train schedules'),
+              onTap: () => _showComingSoon(_l10n.trainSchedules),
             ),
             _TransportCard(
-              title: 'TGM',
+              title: _l10n.tgm,
               icon: Icons.directions_railway_rounded,
-              onTap: () => _showComingSoon('TGM schedules'),
+              onTap: () => _showComingSoon(_l10n.tgmSchedules),
             ),
           ],
         ),
         const SizedBox(height: 28),
-
         Text(
-          'Community',
+          _l10n.community,
           style: Theme.of(context).textTheme.titleLarge
               ?.copyWith(fontWeight: FontWeight.bold),
         ),
@@ -244,10 +290,10 @@ class _HomeScreenState extends State<HomeScreen> {
         Card(
           child: ListTile(
             leading: const CircleAvatar(child: Icon(Icons.campaign_outlined)),
-            title: const Text('Report a problem'),
-            subtitle: const Text('Share delays, crowding or interruptions'),
+            title: Text(_l10n.reportProblem),
+            subtitle: Text(_l10n.reportDescription),
             trailing: const Icon(Icons.chevron_right),
-            onTap: () => _showComingSoon('Community reports'),
+            onTap: () => _showComingSoon(_l10n.communityReports),
           ),
         ),
         Card(
@@ -255,10 +301,10 @@ class _HomeScreenState extends State<HomeScreen> {
             leading: const CircleAvatar(
               child: Icon(Icons.notifications_active_outlined),
             ),
-            title: const Text('Transport updates'),
-            subtitle: const Text('Stay informed about your journeys'),
+            title: Text(_l10n.transportUpdates),
+            subtitle: Text(_l10n.updatesDescription),
             trailing: const Icon(Icons.chevron_right),
-            onTap: () => _showComingSoon('Transport updates'),
+            onTap: () => _showComingSoon(_l10n.transportUpdates),
           ),
         ),
         const SizedBox(height: 20),
@@ -287,10 +333,7 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 8),
             Text(description, textAlign: TextAlign.center),
             const SizedBox(height: 16),
-            const Text(
-              'This section is not connected to transport data yet.',
-              textAlign: TextAlign.center,
-            ),
+            Text(_l10n.sectionUnavailable, textAlign: TextAlign.center),
           ],
         ),
       ),

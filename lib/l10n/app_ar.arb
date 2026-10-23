@@ -1,0 +1,62 @@
+{
+  "@@locale": "ar",
+  "appTitle": "واصلني",
+  "login": "تسجيل الدخول",
+  "signup": "إنشاء حساب",
+  "email": "البريد الإلكتروني",
+  "password": "كلمة المرور",
+  "forgotPassword": "هل نسيت كلمة المرور؟",
+  "logout": "تسجيل الخروج",
+  "home": "الرئيسية",
+  "chooseLanguage": "اختر اللغة",
+  "english": "الإنجليزية",
+  "french": "الفرنسية",
+  "arabic": "العربية",
+  "notifications": "الإشعارات",
+  "account": "الحساب",
+  "signingOut": "جارٍ تسجيل الخروج...",
+  "signOutError": "تعذر تسجيل الخروج. يرجى المحاولة مرة أخرى.",
+  "schedules": "الجداول",
+  "transportSchedules": "مواعيد النقل",
+  "scheduleDescription": "ستظهر هنا مواعيد الحافلات والمترو والقطارات وTGM.",
+  "favorites": "المفضلة",
+  "yourFavorites": "العناصر المفضلة لديك",
+  "favoritesDescription": "ستظهر هنا مساراتك وخطوط النقل المحفوظة.",
+  "accountInformation": "معلومات الحساب",
+  "welcome": "مرحبًا، {name}!",
+  "@welcome": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "traveler": "مسافر",
+  "journeyStarts": "رحلتك تبدأ من هنا.",
+  "travelSmarter": "تنقّل بذكاء",
+  "travelDescription": "اعثر على معلومات النقل وساعد المسافرين الآخرين.",
+  "transport": "وسائل النقل",
+  "bus": "الحافلة",
+  "metro": "المترو",
+  "train": "القطار",
+  "tgm": "TGM",
+  "community": "المجتمع",
+  "reportProblem": "الإبلاغ عن مشكلة",
+  "reportDescription": "شارك معلومات عن التأخير أو الازدحام أو الانقطاعات.",
+  "transportUpdates": "تحديثات النقل",
+  "updatesDescription": "ابقَ على اطلاع برحلاتك.",
+  "sectionUnavailable": "هذا القسم غير مرتبط ببيانات النقل حتى الآن.",
+  "comingSoon": "ستتوفر ميزة {feature} في تحديث مستقبلي.",
+  "@comingSoon": {
+    "placeholders": {
+      "feature": {
+        "type": "String"
+      }
+    }
+  },
+  "busSchedules": "مواعيد الحافلات",
+  "metroSchedules": "مواعيد المترو",
+  "trainSchedules": "مواعيد القطارات",
+  "tgmSchedules": "مواعيد TGM",
+  "communityReports": "بلاغات المجتمع"
+}

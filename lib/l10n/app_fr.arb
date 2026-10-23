@@ -1,0 +1,62 @@
+{
+  "@@locale": "fr",
+  "appTitle": "Waselni",
+  "login": "Connexion",
+  "signup": "Créer un compte",
+  "email": "Adresse e-mail",
+  "password": "Mot de passe",
+  "forgotPassword": "Mot de passe oublié ?",
+  "logout": "Déconnexion",
+  "home": "Accueil",
+  "chooseLanguage": "Choisir la langue",
+  "english": "Anglais",
+  "french": "Français",
+  "arabic": "Arabe",
+  "notifications": "Notifications",
+  "account": "Compte",
+  "signingOut": "Déconnexion en cours...",
+  "signOutError": "Impossible de se déconnecter. Réessayez.",
+  "schedules": "Horaires",
+  "transportSchedules": "Horaires des transports",
+  "scheduleDescription": "Les horaires des bus, du métro, des trains et du TGM apparaîtront ici.",
+  "favorites": "Favoris",
+  "yourFavorites": "Vos favoris",
+  "favoritesDescription": "Vos itinéraires et lignes de transport enregistrés apparaîtront ici.",
+  "accountInformation": "Informations du compte",
+  "welcome": "Bienvenue, {name} !",
+  "@welcome": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "traveler": "voyageur",
+  "journeyStarts": "Votre voyage commence ici.",
+  "travelSmarter": "Voyagez plus intelligemment",
+  "travelDescription": "Trouvez des informations sur les transports et aidez les autres voyageurs.",
+  "transport": "Transports",
+  "bus": "Bus",
+  "metro": "Métro",
+  "train": "Train",
+  "tgm": "TGM",
+  "community": "Communauté",
+  "reportProblem": "Signaler un problème",
+  "reportDescription": "Signalez les retards, l'affluence ou les interruptions.",
+  "transportUpdates": "Actualités des transports",
+  "updatesDescription": "Restez informé de vos trajets.",
+  "sectionUnavailable": "Cette section n'est pas encore connectée aux données de transport.",
+  "comingSoon": "{feature} sera disponible dans une prochaine mise à jour.",
+  "@comingSoon": {
+    "placeholders": {
+      "feature": {
+        "type": "String"
+      }
+    }
+  },
+  "busSchedules": "Horaires des bus",
+  "metroSchedules": "Horaires du métro",
+  "trainSchedules": "Horaires des trains",
+  "tgmSchedules": "Horaires du TGM",
+  "communityReports": "Signalements de la communauté"
+}

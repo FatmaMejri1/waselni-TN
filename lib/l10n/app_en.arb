@@ -1,0 +1,62 @@
+{
+  "@@locale": "en",
+  "appTitle": "Waselni",
+  "login": "Login",
+  "signup": "Sign up",
+  "email": "Email",
+  "password": "Password",
+  "forgotPassword": "Forgot password?",
+  "logout": "Log out",
+  "home": "Home",
+  "chooseLanguage": "Choose language",
+  "english": "English",
+  "french": "French",
+  "arabic": "Arabic",
+  "notifications": "Notifications",
+  "account": "Account",
+  "signingOut": "Signing out...",
+  "signOutError": "Unable to sign out. Please try again.",
+  "schedules": "Schedules",
+  "transportSchedules": "Transport schedules",
+  "scheduleDescription": "Bus, Metro, Train and TGM schedules will appear here.",
+  "favorites": "Favorites",
+  "yourFavorites": "Your favorites",
+  "favoritesDescription": "Your saved routes and transport lines will appear here.",
+  "accountInformation": "Account information",
+  "welcome": "Welcome, {name}!",
+  "@welcome": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "traveler": "traveler",
+  "journeyStarts": "Your journey starts here.",
+  "travelSmarter": "Travel smarter",
+  "travelDescription": "Find transport information and help other travelers.",
+  "transport": "Transport",
+  "bus": "Bus",
+  "metro": "Metro",
+  "train": "Train",
+  "tgm": "TGM",
+  "community": "Community",
+  "reportProblem": "Report a problem",
+  "reportDescription": "Share delays, crowding or interruptions",
+  "transportUpdates": "Transport updates",
+  "updatesDescription": "Stay informed about your journeys",
+  "sectionUnavailable": "This section is not connected to transport data yet.",
+  "comingSoon": "{feature} will be available in a future update.",
+  "@comingSoon": {
+    "placeholders": {
+      "feature": {
+        "type": "String"
+      }
+    }
+  },
+  "busSchedules": "Bus schedules",
+  "metroSchedules": "Metro schedules",
+  "trainSchedules": "Train schedules",
+  "tgmSchedules": "TGM schedules",
+  "communityReports": "Community reports"
+}

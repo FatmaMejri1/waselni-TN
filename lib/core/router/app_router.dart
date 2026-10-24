@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../features/notifications/presentation/notifications_screen.dart';
 import '../../features/home/presentation/home_screen.dart';
 import '../../features/auth/presentation/login_screen.dart';
 import '../../features/auth/presentation/signup_screen.dart';
@@ -26,6 +27,9 @@ class AppRouter {
 
       case Routes.home:
         return _page(const HomeScreen(), settings);
+
+      case Routes.notifications:
+        return _page(const NotificationsScreen(), settings);
 
       default:
         return _page(const PlaceholderScreen(title: 'Not found'), settings);

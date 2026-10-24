@@ -84,7 +84,9 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
             tooltip: _l10n.notifications,
-            onPressed: () => _showComingSoon(_l10n.notifications),
+            onPressed: () {
+              Navigator.of(context).pushNamed(Routes.notifications);
+            },
             icon: const Icon(Icons.notifications_outlined),
           ),
           PopupMenuButton<String>(
@@ -304,7 +306,9 @@ class _HomeScreenState extends State<HomeScreen> {
             title: Text(_l10n.transportUpdates),
             subtitle: Text(_l10n.updatesDescription),
             trailing: const Icon(Icons.chevron_right),
-            onTap: () => _showComingSoon(_l10n.transportUpdates),
+            onTap: () {
+              Navigator.of(context).pushNamed(Routes.notifications);
+            },
           ),
         ),
         const SizedBox(height: 20),

@@ -1,0 +1,1 @@
+enum ScheduleSource { community, official }

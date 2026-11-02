@@ -7,6 +7,16 @@ service cloud.firestore {
       return request.auth != null;
     }
 
+    function isAdmin() {
+      return isSignedIn()
+        && get(
+          /databases/$(database)/documents/users/$(request.auth.uid)
+        ).data.role == 'admin'
+        && get(
+          /databases/$(database)/documents/users/$(request.auth.uid)
+        ).data.isActive == true;
+    }
+
     match /users/{userId} {
       allow create: if isSignedIn()
         && request.auth.uid == userId
@@ -41,6 +51,88 @@ service cloud.firestore {
         && request.resource.data.diff(resource.data)
           .affectedKeys().hasOnly(['displayName'])
         && request.resource.data.displayName is string;
+
+      allow delete: if false;
+    }
+
+    match /schedules/{scheduleId} {
+
+      // Read approved schedules, or any schedule as an admin.
+      allow read: if isSignedIn()
+        && (
+          resource.data.status == 'approved'
+          || isAdmin()
+        );
+
+      // Passengers can only submit pending community suggestions.
+      allow create: if isSignedIn()
+        && request.resource.data.keys().hasAll([
+          'id',
+          'lineId',
+          'departureTime',
+          'days',
+          'source',
+          'status',
+          'submittedBy',
+          'reviewedBy',
+          'createdAt',
+          'updatedAt'
+        ])
+        && request.resource.data.keys().hasOnly([
+          'id',
+          'lineId',
+          'departureTime',
+          'days',
+          'source',
+          'status',
+          'submittedBy',
+          'reviewedBy',
+          'createdAt',
+          'updatedAt'
+        ])
+        && request.resource.data.id == scheduleId
+        && request.resource.data.lineId is string
+        && request.resource.data.departureTime is string
+        && request.resource.data.departureTime.matches(
+          '^([01][0-9]|2[0-3]):[0-5][0-9]$'
+        )
+        && request.resource.data.days is list
+        && request.resource.data.days.size() > 0
+        && request.resource.data.days.size() <= 7
+        && request.resource.data.days.hasOnly([1, 2, 3, 4, 5, 6, 7])
+        && request.resource.data.source == 'community'
+        && request.resource.data.status == 'pending'
+        && request.resource.data.submittedBy == request.auth.uid
+        && request.resource.data.reviewedBy == null
+        && request.resource.data.createdAt is timestamp
+        && request.resource.data.updatedAt is timestamp;
+
+      // Only admins can approve or reject pending suggestions.
+      allow update: if isAdmin()
+        && resource.data.status == 'pending'
+        && resource.data.source == 'community'
+        && request.resource.data.diff(resource.data)
+          .affectedKeys()
+          .hasOnly([
+            'status',
+            'source',
+            'reviewedBy',
+            'updatedAt'
+          ])
+        && request.resource.data.status in ['approved', 'rejected']
+        && request.resource.data.reviewedBy == request.auth.uid
+        && request.resource.data.updatedAt == request.time
+        && (
+          (
+            request.resource.data.status == 'approved'
+            && request.resource.data.source == 'official'
+          )
+          ||
+          (
+            request.resource.data.status == 'rejected'
+            && request.resource.data.source == resource.data.source
+          )
+        );
 
       allow delete: if false;
     }

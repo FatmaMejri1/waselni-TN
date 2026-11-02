@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/constants/routes.dart';
-import '../../../core/localization/locale_controller.dart';
+import '../../../core/providers/auth_provider.dart';
+import '../../../core/providers/locale_provider.dart';
 import '../../../l10n/app_localizations.dart';
-import '../../auth/data/auth_service.dart';
+import '../../auth/domain/user_model.dart';
+import '../../schedules/presentation/schedules_screen.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  final AuthService _authService = AuthService();
-
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   int _selectedIndex = 0;
   bool _isSigningOut = false;
 
@@ -24,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() => _isSigningOut = true);
 
     try {
-      await _authService.signOut();
+      await ref.read(authServiceProvider).signOut();
 
       if (!mounted) return;
 
@@ -43,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _changeLanguage(String languageCode) async {
-    await LocaleController.setLocale(Locale(languageCode));
+    await ref.read(localeProvider.notifier).setLocale(Locale(languageCode));
 
     if (!mounted) return;
 
@@ -65,12 +66,25 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final user = _authService.currentUser;
-    final displayName = user?.displayName?.trim();
-    final greetingName = displayName != null && displayName.isNotEmpty
-        ? displayName
-        : _l10n.traveler;
+    final currentUser = ref.watch(currentUserProvider);
 
+    return currentUser.when(
+      data: (user) {
+        final displayName = user?.displayName.trim();
+        final greetingName = displayName != null && displayName.isNotEmpty
+            ? displayName
+            : _l10n.traveler;
+
+        return _buildHomeContent(user, greetingName);
+      },
+      loading: () =>
+          const Scaffold(body: Center(child: CircularProgressIndicator())),
+      error: (error, stackTrace) =>
+          Scaffold(body: Center(child: Text(_l10n.signOutError))),
+    );
+  }
+
+  Widget _buildHomeContent(UserModel? user, String greetingName) {
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -136,11 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
         index: _selectedIndex,
         children: [
           _buildDashboard(greetingName),
-          _buildSimplePage(
-            icon: Icons.schedule_outlined,
-            title: _l10n.transportSchedules,
-            description: _l10n.scheduleDescription,
-          ),
+          const SchedulesScreen(),
           _buildSimplePage(
             icon: Icons.favorite_outline,
             title: _l10n.yourFavorites,

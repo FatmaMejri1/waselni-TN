@@ -1,84 +1,66 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/providers/schedule_provider.dart';
+import '../../../core/providers/transport_provider.dart';
 import '../../../l10n/app_localizations.dart';
-import '../../transport/data/transport_service.dart';
 import '../../transport/domain/line_model.dart';
-import '../data/schedule_service.dart';
 import '../domain/schedule_model.dart';
 import 'submit_schedule_screen.dart';
 
-class SchedulesScreen extends StatelessWidget {
+class SchedulesScreen extends ConsumerWidget {
   const SchedulesScreen({super.key});
 
-  static final _scheduleService = ScheduleService();
-  static final _transportService = TransportService();
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
+    final schedulesAsync = ref.watch(approvedSchedulesProvider);
+    final linesAsync = ref.watch(linesProvider);
 
-    return StreamBuilder<List<ScheduleModel>>(
-      stream: _scheduleService.watchApprovedSchedules(),
-      builder: (context, scheduleSnapshot) {
-        if (scheduleSnapshot.hasError) {
-          return _MessageView(
-            icon: Icons.error_outline,
-            message: l10n.scheduleLoadError,
-          );
-        }
-
-        if (scheduleSnapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        final schedules = scheduleSnapshot.data ?? [];
-
-        if (schedules.isEmpty) {
-          return _MessageView(
-            icon: Icons.schedule_outlined,
-            message: l10n.noSchedulesAvailable,
-          );
-        }
-
-        return StreamBuilder<List<LineModel>>(
-          stream: _transportService.watchLines(),
-          builder: (context, lineSnapshot) {
-            if (lineSnapshot.hasError) {
-              return _MessageView(
-                icon: Icons.error_outline,
-                message: l10n.scheduleLoadError,
-              );
-            }
-
-            if (lineSnapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            }
-
-            final lines = {
-              for (final line in lineSnapshot.data ?? []) line.id: line,
-            };
-
-            return Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: FilledButton.icon(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute<void>(
-                            builder: (_) => const SubmitScheduleScreen(),
-                          ),
-                        );
-                      },
-                      icon: const Icon(Icons.add),
-                      label: Text(l10n.submitSchedule),
-                    ),
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+          child: SizedBox(
+            width: double.infinity,
+            child: FilledButton.icon(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (_) => const SubmitScheduleScreen(),
                   ),
+                );
+              },
+              icon: const Icon(Icons.add),
+              label: Text(l10n.submitSchedule),
+            ),
+          ),
+        ),
+        Expanded(
+          child: schedulesAsync.when(
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (error, stackTrace) => _MessageView(
+              icon: Icons.error_outline,
+              message: l10n.scheduleLoadError,
+            ),
+            data: (schedules) {
+              if (schedules.isEmpty) {
+                return _MessageView(
+                  icon: Icons.schedule_outlined,
+                  message: l10n.noSchedulesAvailable,
+                );
+              }
+
+              return linesAsync.when(
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (error, stackTrace) => _MessageView(
+                  icon: Icons.error_outline,
+                  message: l10n.scheduleLoadError,
                 ),
-                Expanded(
-                  child: ListView.separated(
+                data: (lineList) {
+                  final lines = {for (final line in lineList) line.id: line};
+
+                  return ListView.separated(
                     padding: const EdgeInsets.all(16),
                     itemCount: schedules.length,
                     separatorBuilder: (_, _) => const SizedBox(height: 12),
@@ -92,13 +74,13 @@ class SchedulesScreen extends StatelessWidget {
                         l10n: l10n,
                       );
                     },
-                  ),
-                ),
-              ],
-            );
-          },
-        );
-      },
+                  );
+                },
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }
@@ -143,7 +125,7 @@ class _ScheduleCard extends StatelessWidget {
         ? l10n.transportSchedules
         : '${line!.code} - ${line!.name}';
 
-    final days = schedule.days.map(_dayName).join('، ');
+    final days = schedule.days.map(_dayName).join(' • ');
 
     return Card(
       child: Padding(

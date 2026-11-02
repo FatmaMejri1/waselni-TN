@@ -1,32 +1,29 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/constants/firestore_paths.dart';
+import '../../../core/providers/auth_provider.dart';
+import '../../../core/providers/schedule_provider.dart';
+import '../../../core/providers/transport_provider.dart';
 import '../../../l10n/app_localizations.dart';
-import '../../auth/data/auth_service.dart';
-import '../../transport/data/transport_service.dart';
-import '../../transport/domain/line_model.dart';
-import '../data/schedule_service.dart';
 import '../domain/schedule_model.dart';
 
-class SubmitScheduleScreen extends StatefulWidget {
+class SubmitScheduleScreen extends ConsumerStatefulWidget {
   const SubmitScheduleScreen({super.key});
 
   @override
-  State<SubmitScheduleScreen> createState() => _SubmitScheduleScreenState();
+  ConsumerState<SubmitScheduleScreen> createState() =>
+      _SubmitScheduleScreenState();
 }
 
-class _SubmitScheduleScreenState extends State<SubmitScheduleScreen> {
+class _SubmitScheduleScreenState extends ConsumerState<SubmitScheduleScreen> {
   final _formKey = GlobalKey<FormState>();
   final _timeController = TextEditingController();
-
-  final _scheduleService = ScheduleService();
-  final _transportService = TransportService();
-  final _authService = AuthService();
 
   String? _selectedLineId;
   final Set<int> _selectedDays = {};
   final _daysFieldKey = GlobalKey<FormFieldState<Set<int>>>();
+
   bool _isSubmitting = false;
 
   @override
@@ -55,7 +52,7 @@ class _SubmitScheduleScreenState extends State<SubmitScheduleScreen> {
     if (!_formKey.currentState!.validate()) return;
 
     final l10n = AppLocalizations.of(context)!;
-    final userId = _authService.currentUser?.uid;
+    final userId = ref.read(authServiceProvider).currentUser?.uid;
 
     if (userId == null) {
       ScaffoldMessenger.of(context)
@@ -67,7 +64,9 @@ class _SubmitScheduleScreenState extends State<SubmitScheduleScreen> {
 
     try {
       final now = DateTime.now();
-      final scheduleId = FirebaseFirestore.instance
+
+      final scheduleId = ref
+          .read(firestoreProvider)
           .collection(FirestorePaths.schedules)
           .doc()
           .id;
@@ -82,7 +81,7 @@ class _SubmitScheduleScreenState extends State<SubmitScheduleScreen> {
         updatedAt: now,
       );
 
-      await _scheduleService.submitSchedule(schedule);
+      await ref.read(scheduleServiceProvider).submitSchedule(schedule);
 
       if (!mounted) return;
 
@@ -126,24 +125,15 @@ class _SubmitScheduleScreenState extends State<SubmitScheduleScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final activeLinesAsync = ref.watch(activeLinesProvider);
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.submitSchedule)),
-      body: StreamBuilder<List<LineModel>>(
-        stream: _transportService.watchLines(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Center(child: Text(l10n.scheduleLoadError));
-          }
-
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          final activeLines = (snapshot.data ?? [])
-              .where((line) => line.isActive)
-              .toList();
-
+      body: activeLinesAsync.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, stackTrace) =>
+            Center(child: Text(l10n.scheduleLoadError)),
+        data: (activeLines) {
           if (activeLines.isEmpty) {
             return Center(
               child: Padding(
@@ -167,7 +157,7 @@ class _SubmitScheduleScreenState extends State<SubmitScheduleScreen> {
                       border: const OutlineInputBorder(),
                     ),
                     items: activeLines.map((line) {
-                      return DropdownMenuItem(
+                      return DropdownMenuItem<String>(
                         value: line.id,
                         child: Text('${line.code} - ${line.name}'),
                       );
@@ -198,10 +188,12 @@ class _SubmitScheduleScreenState extends State<SubmitScheduleScreen> {
                       if (value == null || value.isEmpty) {
                         return l10n.selectDepartureTime;
                       }
+
                       if (!RegExp(r'^([01][0-9]|2[0-3]):[0-5][0-9]$')
                           .hasMatch(value)) {
                         return l10n.selectDepartureTime;
                       }
+
                       return null;
                     },
                   ),

@@ -213,4 +213,42 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get scheduleSubmitError =>
       'Impossible d\'envoyer votre proposition. Veuillez réessayer.';
+
+  @override
+  String get transportLines => 'Lignes de transport';
+
+  @override
+  String get noLinesAvailable => 'Aucune ligne de transport disponible.';
+
+  @override
+  String get linesLoadError =>
+      'Impossible de charger les lignes. Veuillez réessayer.';
+
+  @override
+  String get retry => 'Réessayer';
+
+  @override
+  String stationsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count stations',
+      one: '1 station',
+      zero: 'Aucune station',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get transportStations => 'Stations de transport';
+
+  @override
+  String get noStationsAvailable => 'Aucune station disponible.';
+
+  @override
+  String get stationsLoadError =>
+      'Impossible de charger les stations. Veuillez réessayer.';
+
+  @override
+  String get coordinates => 'Coordonnées';
 }

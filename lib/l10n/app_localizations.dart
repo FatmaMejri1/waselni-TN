@@ -483,6 +483,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unable to submit your suggestion. Please try again.'**
   String get scheduleSubmitError;
+
+  /// No description provided for @transportLines.
+  ///
+  /// In en, this message translates to:
+  /// **'Transport lines'**
+  String get transportLines;
+
+  /// No description provided for @noLinesAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No transport lines available.'**
+  String get noLinesAvailable;
+
+  /// No description provided for @linesLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to load transport lines. Please try again.'**
+  String get linesLoadError;
+
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
+  /// No description provided for @stationsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No stations} =1{1 station} other{{count} stations}}'**
+  String stationsCount(int count);
+
+  /// No description provided for @transportStations.
+  ///
+  /// In en, this message translates to:
+  /// **'Transport stations'**
+  String get transportStations;
+
+  /// No description provided for @noStationsAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No stations available.'**
+  String get noStationsAvailable;
+
+  /// No description provided for @stationsLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to load stations. Please try again.'**
+  String get stationsLoadError;
+
+  /// No description provided for @coordinates.
+  ///
+  /// In en, this message translates to:
+  /// **'Coordinates'**
+  String get coordinates;
 }
 
 class _AppLocalizationsDelegate

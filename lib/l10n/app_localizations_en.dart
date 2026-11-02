@@ -210,4 +210,41 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get scheduleSubmitError =>
       'Unable to submit your suggestion. Please try again.';
+
+  @override
+  String get transportLines => 'Transport lines';
+
+  @override
+  String get noLinesAvailable => 'No transport lines available.';
+
+  @override
+  String get linesLoadError =>
+      'Unable to load transport lines. Please try again.';
+
+  @override
+  String get retry => 'Retry';
+
+  @override
+  String stationsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count stations',
+      one: '1 station',
+      zero: 'No stations',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get transportStations => 'Transport stations';
+
+  @override
+  String get noStationsAvailable => 'No stations available.';
+
+  @override
+  String get stationsLoadError => 'Unable to load stations. Please try again.';
+
+  @override
+  String get coordinates => 'Coordinates';
 }

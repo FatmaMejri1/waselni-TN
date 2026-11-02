@@ -210,4 +210,40 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get scheduleSubmitError =>
       'تعذر إرسال اقتراحك. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get transportLines => 'خطوط النقل';
+
+  @override
+  String get noLinesAvailable => 'لا توجد خطوط نقل متاحة.';
+
+  @override
+  String get linesLoadError => 'تعذر تحميل خطوط النقل. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get retry => 'إعادة المحاولة';
+
+  @override
+  String stationsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count محطة',
+      one: 'محطة واحدة',
+      zero: 'لا توجد محطات',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get transportStations => 'محطات النقل';
+
+  @override
+  String get noStationsAvailable => 'لا توجد محطات متاحة.';
+
+  @override
+  String get stationsLoadError => 'تعذر تحميل المحطات. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get coordinates => 'الإحداثيات';
 }

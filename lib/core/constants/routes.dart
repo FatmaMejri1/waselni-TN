@@ -7,4 +7,8 @@ class Routes {
   static const forgotPassword = '/forgot-password';
   static const home = '/home';
   static const notifications = '/notifications';
+
+  // Transport
+  static const transportLines = '/transport/lines';
+  static const transportStations = '/transport/stations';
 }

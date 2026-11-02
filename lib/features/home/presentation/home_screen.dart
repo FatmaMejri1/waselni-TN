@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../transport/domain/transport_type.dart';
 import '../../../core/constants/routes.dart';
 import '../../../core/providers/auth_provider.dart';
 import '../../../core/providers/locale_provider.dart';
@@ -62,6 +63,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   void _showComingSoon(String feature) {
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text(_l10n.comingSoon(feature))));
+  }
+
+  void _openTransportLines(TransportType transportType) {
+    Navigator.of(context)
+        .pushNamed(Routes.transportLines, arguments: transportType);
+  }
+
+  void _openTransportStations() {
+    Navigator.of(context).pushNamed(Routes.transportStations);
   }
 
   @override
@@ -273,22 +283,27 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             _TransportCard(
               title: _l10n.bus,
               icon: Icons.directions_bus_rounded,
-              onTap: () => _showComingSoon(_l10n.busSchedules),
+              onTap: () => _openTransportLines(TransportType.bus),
             ),
             _TransportCard(
               title: _l10n.metro,
               icon: Icons.tram_rounded,
-              onTap: () => _showComingSoon(_l10n.metroSchedules),
+              onTap: () => _openTransportLines(TransportType.metro),
             ),
             _TransportCard(
               title: _l10n.train,
               icon: Icons.train_rounded,
-              onTap: () => _showComingSoon(_l10n.trainSchedules),
+              onTap: () => _openTransportLines(TransportType.train),
             ),
             _TransportCard(
               title: _l10n.tgm,
               icon: Icons.directions_railway_rounded,
-              onTap: () => _showComingSoon(_l10n.tgmSchedules),
+              onTap: () => _openTransportLines(TransportType.tgm),
+            ),
+            _TransportCard(
+              title: _l10n.transportStations,
+              icon: Icons.location_on_outlined,
+              onTap: _openTransportStations,
             ),
           ],
         ),

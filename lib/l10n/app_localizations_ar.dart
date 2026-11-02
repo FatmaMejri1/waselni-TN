@@ -151,4 +151,63 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get communityReports => 'بلاغات المجتمع';
+
+  @override
+  String get noSchedulesAvailable => 'لا توجد مواعيد متاحة حاليًا.';
+
+  @override
+  String get scheduleLoadError =>
+      'تعذر تحميل المواعيد. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get departureTime => 'وقت المغادرة';
+
+  @override
+  String get operatingDays => 'أيام التشغيل';
+
+  @override
+  String get monday => 'الاثنين';
+
+  @override
+  String get tuesday => 'الثلاثاء';
+
+  @override
+  String get wednesday => 'الأربعاء';
+
+  @override
+  String get thursday => 'الخميس';
+
+  @override
+  String get friday => 'الجمعة';
+
+  @override
+  String get saturday => 'السبت';
+
+  @override
+  String get sunday => 'الأحد';
+
+  @override
+  String get officialSchedule => 'موعد رسمي';
+
+  @override
+  String get submitSchedule => 'اقتراح موعد';
+
+  @override
+  String get selectLine => 'اختر خط النقل';
+
+  @override
+  String get noActiveLines => 'لا توجد خطوط نقل نشطة متاحة.';
+
+  @override
+  String get selectDepartureTime => 'اختر وقت المغادرة';
+
+  @override
+  String get selectAtLeastOneDay => 'اختر يوم تشغيل واحدًا على الأقل.';
+
+  @override
+  String get scheduleSubmitted => 'تم إرسال اقتراح الموعد بنجاح.';
+
+  @override
+  String get scheduleSubmitError =>
+      'تعذر إرسال اقتراحك. يرجى المحاولة مرة أخرى.';
 }

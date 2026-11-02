@@ -151,4 +151,63 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get communityReports => 'Community reports';
+
+  @override
+  String get noSchedulesAvailable => 'No schedules available yet.';
+
+  @override
+  String get scheduleLoadError => 'Unable to load schedules. Please try again.';
+
+  @override
+  String get departureTime => 'Departure time';
+
+  @override
+  String get operatingDays => 'Operating days';
+
+  @override
+  String get monday => 'Monday';
+
+  @override
+  String get tuesday => 'Tuesday';
+
+  @override
+  String get wednesday => 'Wednesday';
+
+  @override
+  String get thursday => 'Thursday';
+
+  @override
+  String get friday => 'Friday';
+
+  @override
+  String get saturday => 'Saturday';
+
+  @override
+  String get sunday => 'Sunday';
+
+  @override
+  String get officialSchedule => 'Official schedule';
+
+  @override
+  String get submitSchedule => 'Suggest a schedule';
+
+  @override
+  String get selectLine => 'Select a transport line';
+
+  @override
+  String get noActiveLines => 'No active transport lines available.';
+
+  @override
+  String get selectDepartureTime => 'Choose departure time';
+
+  @override
+  String get selectAtLeastOneDay => 'Select at least one operating day.';
+
+  @override
+  String get scheduleSubmitted =>
+      'Your schedule suggestion was submitted successfully.';
+
+  @override
+  String get scheduleSubmitError =>
+      'Unable to submit your suggestion. Please try again.';
 }

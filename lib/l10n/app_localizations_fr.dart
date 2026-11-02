@@ -152,4 +152,65 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get communityReports => 'Signalements de la communauté';
+
+  @override
+  String get noSchedulesAvailable => 'Aucun horaire disponible pour le moment.';
+
+  @override
+  String get scheduleLoadError =>
+      'Impossible de charger les horaires. Veuillez réessayer.';
+
+  @override
+  String get departureTime => 'Heure de départ';
+
+  @override
+  String get operatingDays => 'Jours de circulation';
+
+  @override
+  String get monday => 'Lundi';
+
+  @override
+  String get tuesday => 'Mardi';
+
+  @override
+  String get wednesday => 'Mercredi';
+
+  @override
+  String get thursday => 'Jeudi';
+
+  @override
+  String get friday => 'Vendredi';
+
+  @override
+  String get saturday => 'Samedi';
+
+  @override
+  String get sunday => 'Dimanche';
+
+  @override
+  String get officialSchedule => 'Horaire officiel';
+
+  @override
+  String get submitSchedule => 'Proposer un horaire';
+
+  @override
+  String get selectLine => 'Sélectionnez une ligne de transport';
+
+  @override
+  String get noActiveLines => 'Aucune ligne de transport active disponible.';
+
+  @override
+  String get selectDepartureTime => 'Choisissez l\'heure de départ';
+
+  @override
+  String get selectAtLeastOneDay =>
+      'Sélectionnez au moins un jour de circulation.';
+
+  @override
+  String get scheduleSubmitted =>
+      'Votre proposition d\'horaire a été envoyée avec succès.';
+
+  @override
+  String get scheduleSubmitError =>
+      'Impossible d\'envoyer votre proposition. Veuillez réessayer.';
 }

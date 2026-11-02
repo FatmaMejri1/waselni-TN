@@ -369,6 +369,120 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Community reports'**
   String get communityReports;
+
+  /// No description provided for @noSchedulesAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No schedules available yet.'**
+  String get noSchedulesAvailable;
+
+  /// No description provided for @scheduleLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to load schedules. Please try again.'**
+  String get scheduleLoadError;
+
+  /// No description provided for @departureTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Departure time'**
+  String get departureTime;
+
+  /// No description provided for @operatingDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Operating days'**
+  String get operatingDays;
+
+  /// No description provided for @monday.
+  ///
+  /// In en, this message translates to:
+  /// **'Monday'**
+  String get monday;
+
+  /// No description provided for @tuesday.
+  ///
+  /// In en, this message translates to:
+  /// **'Tuesday'**
+  String get tuesday;
+
+  /// No description provided for @wednesday.
+  ///
+  /// In en, this message translates to:
+  /// **'Wednesday'**
+  String get wednesday;
+
+  /// No description provided for @thursday.
+  ///
+  /// In en, this message translates to:
+  /// **'Thursday'**
+  String get thursday;
+
+  /// No description provided for @friday.
+  ///
+  /// In en, this message translates to:
+  /// **'Friday'**
+  String get friday;
+
+  /// No description provided for @saturday.
+  ///
+  /// In en, this message translates to:
+  /// **'Saturday'**
+  String get saturday;
+
+  /// No description provided for @sunday.
+  ///
+  /// In en, this message translates to:
+  /// **'Sunday'**
+  String get sunday;
+
+  /// No description provided for @officialSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Official schedule'**
+  String get officialSchedule;
+
+  /// No description provided for @submitSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggest a schedule'**
+  String get submitSchedule;
+
+  /// No description provided for @selectLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a transport line'**
+  String get selectLine;
+
+  /// No description provided for @noActiveLines.
+  ///
+  /// In en, this message translates to:
+  /// **'No active transport lines available.'**
+  String get noActiveLines;
+
+  /// No description provided for @selectDepartureTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose departure time'**
+  String get selectDepartureTime;
+
+  /// No description provided for @selectAtLeastOneDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Select at least one operating day.'**
+  String get selectAtLeastOneDay;
+
+  /// No description provided for @scheduleSubmitted.
+  ///
+  /// In en, this message translates to:
+  /// **'Your schedule suggestion was submitted successfully.'**
+  String get scheduleSubmitted;
+
+  /// No description provided for @scheduleSubmitError.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to submit your suggestion. Please try again.'**
+  String get scheduleSubmitError;
 }
 
 class _AppLocalizationsDelegate
